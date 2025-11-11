@@ -1,55 +1,29 @@
-import os
-import random
-from PIL import Image
-from pathlib import Path
-from tkinter import Tk, filedialog
+import discord
+from discord.ext import commands
+from discord import app_commands 
 
-def shift_image_wrap(image, dx, dy):
-    """Shift image by dx, dy pixels, wrapping around edges."""
-    w, h = image.size
-    shifted = Image.new(image.mode, (w, h))
-    
-    # Break image into four wrapped parts
-    shifted.paste(image.crop((0, 0, w, h)), (dx % w, dy % h))
-    shifted.paste(image.crop((w - dx % w, 0, w, h)), (0, dy % h))
-    shifted.paste(image.crop((0, h - dy % h, w, h)), (dx % w, 0))
-    shifted.paste(image.crop((w - dx % w, h - dy % h, w, h)), (0, 0))
-    
-    return shifted
+# --- CONFIGURATION ---
+YOUR_BOT_TOKEN = "MTQxNDQ1MTY0MDMzNzA0MzQ2Nw.GFq2Jn.ajl5JUfuBT4sOm3c5XgbHwns6y0feMP2a4K7sY" 
+# ---------------------
 
-def process_folder(folder_path):
-    image_extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff', '.webp')
+intents = discord.Intents.default()
+bot = commands.Bot(command_prefix='!', intents=intents)
 
-    for path in Path(folder_path).rglob('*'):
-        if path.suffix.lower() in image_extensions:
-            try:
-                img = Image.open(path).convert("RGBA")
+@bot.event
+async def on_ready():
+    await bot.tree.sync() # Global sync
+    print(f'Logged in as {bot.user} and commands synced globally!')
 
-                # Random shift between -2 and 2 (excluding 0)
-                dx = random.choice([-2, -1, 1, 2])
-                dy = random.choice([-2, -1, 1, 2])
+@bot.tree.command(name="replydm", description="Sends a message back in the current channel/DM.")
+@app_commands.describe(message="The content of the message to send.")
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+async def reply_dm(interaction: discord.Interaction, message: str):
+    try:
+        await interaction.response.send_message(message)
+    except discord.Forbidden:
+        await interaction.response.send_message("I don't have permission to respond here.", ephemeral=True)
+    except Exception as e:
+        await interaction.response.send_message(f"An error occurred: {e}", ephemeral=True)
 
-                shifted_img = shift_image_wrap(img, dx, dy)
-                shifted_img.save(path)
-
-                print(f"Shifted {path.relative_to(folder_path)} by ({dx}, {dy})")
-            except Exception as e:
-                print(f"\u0012 Failed to process {path}: {e}")
-
-def main():
-    # Hide the root window
-    root = Tk()
-    root.withdraw()
-
-    print("\u0000 Please choose a folder containing images...")
-    folder = filedialog.askdirectory(title="Select Folder with Images")
-    if not folder:
-        print("No folder selected. Exiting.")
-        return
-
-    print(f"Processing images in: {folder}\n")
-    process_folder(folder)
-    print("\n\u0001 Done shifting all images!")
-
-if __name__ == "__main__":
-    main()
+# Run the bot
+bot.run(YOUR_BOT_TOKEN)
