@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 import os
 import random
+import asyncio
 
 # --- CONFIGURATION ---
 YOUR_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -16,6 +17,9 @@ print(f"Token loaded: {len(YOUR_BOT_TOKEN)} characters")
 
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix='!', intents=intents)
+
+# Dictionary to track active spam tasks by channel ID
+active_spam_tasks = {}
 
 @bot.event
 async def on_ready():
@@ -59,6 +63,75 @@ async def random_message(interaction: discord.Interaction):
     try:
         message = random.choice(RANDOM_MESSAGES)
         await interaction.response.send_message(message)
+    except discord.Forbidden:
+        await interaction.response.send_message("I don't have permission to respond here.", ephemeral=True)
+    except Exception as e:
+        await interaction.response.send_message(f"I died 💀: {e}", ephemeral=True)
+
+async def spam_loop(channel, channel_id):
+    """Background task that sends random messages every 1-5 minutes"""
+    try:
+        while True:
+            # Wait for a random interval between 1-5 minutes (60-300 seconds)
+            wait_time = random.randint(60, 300)
+            await asyncio.sleep(wait_time)
+            
+            # Send a random message
+            message = random.choice(RANDOM_MESSAGES)
+            await channel.send(message)
+    except asyncio.CancelledError:
+        # Task was cancelled, clean exit
+        pass
+    except Exception as e:
+        # Log error and notify about failure
+        print(f"Error in spam loop for channel {channel_id}: {e}")
+        try:
+            await channel.send("I [CRASHED]!! USE /spam TO START ME AGAIN!!")
+        except:
+            pass
+    finally:
+        # Always clean up the task reference, preventing memory leaks
+        if channel_id in active_spam_tasks:
+            del active_spam_tasks[channel_id]
+
+@bot.tree.command(name="spam", description="Start sending random messages every 1-5 minutes.")
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+async def start_spam(interaction: discord.Interaction):
+    try:
+        channel_id = interaction.channel_id
+        
+        # Check if spam is already active in this channel
+        if channel_id in active_spam_tasks:
+            await interaction.response.send_message("I'M ALREADY [Spamming] HERE!!", ephemeral=True)
+            return
+        
+        # Create and store the background task
+        task = asyncio.create_task(spam_loop(interaction.channel, channel_id))
+        active_spam_tasks[channel_id] = task
+        
+        await interaction.response.send_message("NOW I'LL BE A [BIG SHOT] EVERY 1-5 MINUTES!! USE /stop TO MAKE ME [Quiet]!!")
+    except discord.Forbidden:
+        await interaction.response.send_message("I don't have permission to respond here.", ephemeral=True)
+    except Exception as e:
+        await interaction.response.send_message(f"I died 💀: {e}", ephemeral=True)
+
+@bot.tree.command(name="stop", description="Stop sending random messages.")
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+async def stop_spam(interaction: discord.Interaction):
+    try:
+        channel_id = interaction.channel_id
+        
+        # Check if spam is active in this channel
+        if channel_id not in active_spam_tasks:
+            await interaction.response.send_message("I'M NOT EVEN [Spamming] HERE!!", ephemeral=True)
+            return
+        
+        # Cancel the task and remove it from the dictionary
+        task = active_spam_tasks[channel_id]
+        task.cancel()
+        del active_spam_tasks[channel_id]
+        
+        await interaction.response.send_message("FINE!! I'LL STOP BEING A [BIG SHOT]... FOR NOW...")
     except discord.Forbidden:
         await interaction.response.send_message("I don't have permission to respond here.", ephemeral=True)
     except Exception as e:
