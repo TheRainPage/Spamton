@@ -32,17 +32,17 @@ async def reply_dm(interaction: discord.Interaction, message: str):
     except Exception as e:
         await interaction.response.send_message(f"An error occurred: {e}", ephemeral=True)
 
-@bot.tree.command(name="dm", description="Sends you a direct message.")
-@app_commands.describe(message="The message to send to your DMs.")
+@bot.tree.command(name="dm", description="Sends a direct message to a mentioned user.")
+@app_commands.describe(user="The user to send the DM to.", message="The message to send.")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-async def dm_user(interaction: discord.Interaction, message: str):
+async def dm_user(interaction: discord.Interaction, user: discord.User, message: str):
     try:
-        # Send a DM to the user
-        await interaction.user.send(message)
-        # Confirm in the channel (ephemeral so only the user sees it)
-        await interaction.response.send_message("I've sent you a DM!", ephemeral=True)
+        # Send a DM to the mentioned user
+        await user.send(message)
+        # Confirm in the channel (ephemeral so only the command user sees it)
+        await interaction.response.send_message(f"I've sent a DM to {user.mention}!", ephemeral=True)
     except discord.Forbidden:
-        await interaction.response.send_message("I couldn't send you a DM. Please check your privacy settings.", ephemeral=True)
+        await interaction.response.send_message(f"I couldn't send a DM to {user.mention}. They may have DMs disabled.", ephemeral=True)
     except Exception as e:
         await interaction.response.send_message(f"An error occurred: {e}", ephemeral=True)
 
