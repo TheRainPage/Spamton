@@ -12,7 +12,6 @@ if not YOUR_BOT_TOKEN:
 
 # Strip any whitespace that might have been added
 YOUR_BOT_TOKEN = YOUR_BOT_TOKEN.strip()
-print(f"Token loaded: {len(YOUR_BOT_TOKEN)} characters")
 # ---------------------
 
 intents = discord.Intents.default()
@@ -55,6 +54,30 @@ RANDOM_MESSAGES = [
     "PIPIS",
     "WELCOME TO THE CITY OF [Burning Acid]!!",
     "YOU WANT [Kromer]?!",
+    "BUY SOMETHIN WILL YA!!",
+    "THAT'S [Fifty Percent Off] FOR YOU!!",
+    "I'M GONNA BE A [Big Shot]!!",
+    "DON'T YOU [Little Sponge] WANT TO HELP AN OLD FRIEND?!",
+    "HEAVEN KNOWS I'VE BEEN [Broke] FOR A WHILE!!",
+    "ALL I NEED IS THAT [[Sweet, Sweet]] [Kromer]!!",
+    "I CAN MAKE YOU [Powerful]!!",
+    "EVEN A [Stupid] LITTLE [Worm] LIKE YOU CAN BE A [Big Shot]!!",
+    "IT'S TIME TO BE A [Big Shot]!! A REAL [Big Shot]!!",
+    "LIGHT [[Specil Attack]]!!",
+    "NO MORE BEING THE [Little] GUY!!",
+    "ARE YOU [Desperate] ENOUGH TO TAKE MY [Deal]?!",
+    "TAKE A GOD DAMN [Vacation] STRAIGHT TO HELL!!",
+    "I KNOW YOU'RE WATCHING!!",
+    "[[It Burns! Ow! Stop! Help Me! It Burns!]]",
+    "KRIS!! CAN YOU [[Hear Me??]]",
+    "I JUST WANTED TO BE [Big]...",
+    "DEALS SO GOOD I'LL [[Blow Your Mind]]!!",
+    "WHY DON'T YOU [Answer The Phone]?!",
+    "THE [[Number 1 Rated Salesman1997]]!!",
+    "WHAT ARE YOU [Waiting For]?!",
+    "COME ON!! JUST A LITTLE MORE [[Kromer]]!!",
+    "I'M GOING TO BE [Rich]!!",
+    "YOU [Little Sponge]!! STOP IGNORING ME!!",
 ]
 
 @bot.tree.command(name="random", description="Sends a random message in the current channel.")

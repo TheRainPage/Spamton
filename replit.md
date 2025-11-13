@@ -34,7 +34,7 @@ The bot requires the following environment variable:
   - Per-channel tracking allows independent spam control
 - 2025-11-13: Added /random command feature
   - Implemented random message selection from Spamton-themed message list
-  - 16 unique random messages matching Spamton's character
+  - 40 unique random messages matching Spamton's character
   - Consistent error handling across all commands
 - 2025-11-13: Initial setup in Replit environment
   - Migrated bot token to environment variable for security
