@@ -21,7 +21,7 @@ async def on_ready():
     await bot.tree.sync() # Global sync
     print(f'Logged in as {bot.user} and commands synced globally!')
 
-@bot.tree.command(name="replydm", description="Sends a message back in the current channel/DM.")
+@bot.tree.command(name="reply", description="Sends a message back in the current channel/DM.")
 @app_commands.describe(message="The content of the message to send.")
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def reply_dm(interaction: discord.Interaction, message: str):
@@ -30,7 +30,7 @@ async def reply_dm(interaction: discord.Interaction, message: str):
     except discord.Forbidden:
         await interaction.response.send_message("I don't have permission to respond here.", ephemeral=True)
     except Exception as e:
-        await interaction.response.send_message(f"An error occurred: {e}", ephemeral=True)
+        await interaction.response.send_message(f"I died 💀: {e}", ephemeral=True)
 
 # Run the bot
 bot.run(YOUR_BOT_TOKEN)
