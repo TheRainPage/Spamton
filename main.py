@@ -1,9 +1,12 @@
 import discord
 from discord.ext import commands
-from discord import app_commands 
+from discord import app_commands
+import os
 
 # --- CONFIGURATION ---
-YOUR_BOT_TOKEN = "MTQxNDQ1MTY0MDMzNzA0MzQ2Nw.GFq2Jn.ajl5JUfuBT4sOm3c5XgbHwns6y0feMP2a4K7sY" 
+YOUR_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+if not YOUR_BOT_TOKEN:
+    raise ValueError("DISCORD_BOT_TOKEN environment variable is not set. Please add your Discord bot token to Secrets.")
 # ---------------------
 
 intents = discord.Intents.default()
