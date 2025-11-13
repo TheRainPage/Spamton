@@ -7,6 +7,10 @@ import os
 YOUR_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 if not YOUR_BOT_TOKEN:
     raise ValueError("DISCORD_BOT_TOKEN environment variable is not set. Please add your Discord bot token to Secrets.")
+
+# Strip any whitespace that might have been added
+YOUR_BOT_TOKEN = YOUR_BOT_TOKEN.strip()
+print(f"Token loaded: {len(YOUR_BOT_TOKEN)} characters")
 # ---------------------
 
 intents = discord.Intents.default()
