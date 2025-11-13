@@ -4,7 +4,8 @@
 A Discord bot built with discord.py that provides slash commands for sending messages in channels and DMs.
 
 ## Features
-- `/replydm` - Sends a message back in the current channel or DM
+- `/reply` - Sends a custom message back in the current channel or DM
+- `/random` - Sends a random Spamton-themed message in the current channel
 - Works in guilds, DMs, and private channels
 - Uses Discord slash commands (app_commands)
 
@@ -24,6 +25,10 @@ The bot requires the following environment variable:
 - `DISCORD_BOT_TOKEN`: Your Discord bot token (stored in Replit Secrets)
 
 ## Recent Changes
+- 2025-11-13: Added /random command feature
+  - Implemented random message selection from Spamton-themed message list
+  - 16 unique random messages matching Spamton's character
+  - Consistent error handling across all commands
 - 2025-11-13: Initial setup in Replit environment
   - Migrated bot token to environment variable for security
   - Configured Python dependencies with uv
