@@ -40,7 +40,7 @@ async def dm_user(interaction: discord.Interaction, user: discord.User, message:
         # Send a DM to the mentioned user
         await user.send(message)
         # Confirm in the channel (ephemeral so only the command user sees it)
-        await interaction.response.send_message(f"I've sent a DM to {user.mention}!", ephemeral=True)
+        await interaction.response.send_message(f"PISS YOURSELF", ephemeral=True)
     except discord.Forbidden:
         await interaction.response.send_message(f"I couldn't send a DM to {user.mention}. They may have DMs disabled.", ephemeral=True)
     except Exception as e:
