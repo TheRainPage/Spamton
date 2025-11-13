@@ -6,6 +6,8 @@ A Discord bot built with discord.py that provides slash commands for sending mes
 ## Features
 - `/reply` - Sends a custom message back in the current channel or DM
 - `/random` - Sends a random Spamton-themed message in the current channel
+- `/spam` - Starts sending random Spamton messages automatically every 1-5 minutes
+- `/stop` - Stops the automatic message sending
 - Works in guilds, DMs, and private channels
 - Uses Discord slash commands (app_commands)
 
@@ -25,6 +27,11 @@ The bot requires the following environment variable:
 - `DISCORD_BOT_TOKEN`: Your Discord bot token (stored in Replit Secrets)
 
 ## Recent Changes
+- 2025-11-13: Added /spam and /stop commands for automatic messaging
+  - Background task system sends random messages every 1-5 minutes
+  - Proper resource cleanup prevents memory leaks
+  - Error recovery notifies users if auto-messaging crashes
+  - Per-channel tracking allows independent spam control
 - 2025-11-13: Added /random command feature
   - Implemented random message selection from Spamton-themed message list
   - 16 unique random messages matching Spamton's character
