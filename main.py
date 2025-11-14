@@ -96,7 +96,7 @@ async def spam_loop(channel, channel_id):
     try:
         while True:
             # Wait for a random interval between 1-5 minutes (60-300 seconds)
-            wait_time = random.randint(0, 15)
+            wait_time = random.randint(0, 300)
             await asyncio.sleep(wait_time)
             
             # Send a random message
